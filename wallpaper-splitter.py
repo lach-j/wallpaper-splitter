@@ -34,7 +34,7 @@ def main(args):
         resize_h = resize_w / image_ratio
     else:
         resize_h = screen_height
-        resize_w = resize_h / image_ratio
+        resize_w = resize_h * image_ratio
 
     im = im.resize((round(resize_w), round(resize_h)))
 
@@ -42,10 +42,20 @@ def main(args):
     y_offset = 0
 
     if (screen_width < resize_w):
-        x_offset = round(resize_w/2 - screen_width/2)
+        if args.align_horizontal == "centre":
+            x_offset = round(resize_w/2 - screen_width/2)
+        elif args.align_horizontal == "left":
+            x_offset = 0
+        else:
+            x_offset = resize_w - screen_width
 
     if (screen_height < resize_h):
-        y_offset = round(resize_h/2 - screen_height/2)
+        if args.align_vertical == "centre":
+            y_offset = round(resize_h/2 - screen_height/2)
+        elif args.align_vertical == "top":
+            y_offset = 0
+        else:
+            y_offset = resize_h - screen_height
 
     for screen in screens:
         left = screen["x"] + x_offset
@@ -67,6 +77,8 @@ if __name__ == "__main__":
     parser.add_argument('inputfile', type=str, metavar="input-file", help="path to the image to be split")
     parser.add_argument('--out', '-o', type=str, help="path of the directory to save output files (default: name of input file)")
     parser.add_argument('--extension', '-x', type=str, help="file extension of output images (default: match input file)")
+    parser.add_argument('--align-horizontal', '-hz', type=str, default="centre", choices=["left", "centre", "right"], help="horizontal alignment of values (default: centre)")
+    parser.add_argument('--align-vertical', '-v', type=str, default="centre", choices=["top", "centre", "bottom"], help="vertical alignment of values (default: centre)")
     args = parser.parse_args()
     
     main(args)
