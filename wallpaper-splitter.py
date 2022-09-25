@@ -2,11 +2,14 @@ from PIL import Image
 import json
 from pathlib import Path
 import argparse
+import os
 
 def main(args):
-    im = Image.open(args.inputfile)
-    extension = args.extension if args.extension else args.inputfile.split(".")[-1]
+    filename, file_extension = os.path.splitext(args.inputfile)
+    extension = args.extension if args.extension else file_extension
 
+
+    im = Image.open(args.inputfile)
     width, height = im.size
 
     with open("config.json", "r") as config_file:
@@ -53,7 +56,7 @@ def main(args):
     
         im1 = im.crop((left, top, right, bottom))
 
-        basename = args.out if args.out else args.inputfile.split(".")[-2].split("/")[-1]
+        basename = args.out if args.out else filename
 
         Path(basename).mkdir(parents=True, exist_ok=True)
 
