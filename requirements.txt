@@ -1,1 +1,2 @@
 Pillow==9.2.0
+screeninfo==0.8.1
