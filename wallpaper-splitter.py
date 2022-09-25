@@ -3,17 +3,20 @@ import json
 from pathlib import Path
 import argparse
 import os
+from screeninfo import get_monitors
 
 def main(args):
     filename, file_extension = os.path.splitext(args.inputfile)
     extension = args.extension if args.extension else file_extension
 
-
     im = Image.open(args.inputfile)
     width, height = im.size
 
-    with open("config.json", "r") as config_file:
-        screens = json.load(config_file)
+    if args.use_config:
+        with open("config.json", "r") as config_file:
+            screens = json.load(config_file)
+    else:
+        screens = [m.__dict__ for m in get_monitors()]
 
     screen_width = 0
     screen_height = 0
@@ -79,6 +82,7 @@ if __name__ == "__main__":
     parser.add_argument('--extension', '-x', type=str, help="file extension of output images (default: match input file)")
     parser.add_argument('--align-horizontal', '-hz', type=str, default="centre", choices=["left", "centre", "right"], help="horizontal alignment of values (default: centre)")
     parser.add_argument('--align-vertical', '-v', type=str, default="centre", choices=["top", "centre", "bottom"], help="vertical alignment of values (default: centre)")
+    parser.add_argument('--use-config', '-c', action="store_true", help="use if the config.json file should be used")
     args = parser.parse_args()
     
     main(args)
