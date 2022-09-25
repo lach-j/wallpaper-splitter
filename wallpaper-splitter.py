@@ -61,9 +61,9 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('inputfile', type=str, help="path to the image to be split")
-    parser.add_argument('--out', '-o', type=str, help="path of folder to save output files")
-    parser.add_argument('--extension', '-x', type=str, help="file extension of output images")
+    parser.add_argument('inputfile', type=str, metavar="input-file", help="path to the image to be split")
+    parser.add_argument('--out', '-o', type=str, help="path of the directory to save output files (default: name of input file)")
+    parser.add_argument('--extension', '-x', type=str, help="file extension of output images (default: match input file)")
     args = parser.parse_args()
     
     main(args)
