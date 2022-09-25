@@ -5,6 +5,7 @@ import argparse
 import os
 from screeninfo import get_monitors
 
+
 def main(args):
     filename, file_extension = os.path.splitext(args.inputfile)
     extension = args.extension if args.extension else file_extension
@@ -20,7 +21,7 @@ def main(args):
 
     screen_width = 0
     screen_height = 0
-    
+
     for screen in screens:
         curr_width = screen["x"] + screen["width"]
         if curr_width > screen_width:
@@ -66,7 +67,7 @@ def main(args):
         right = left + screen["width"]
         bottom = top + screen["height"]
         name = screen["name"]
-    
+
         im1 = im.crop((left, top, right, bottom))
 
         basename = args.out if args.out else filename
@@ -75,14 +76,21 @@ def main(args):
 
         im1.save(f"{basename}/{name}.{extension}")
 
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('inputfile', type=str, metavar="input-file", help="path to the image to be split")
-    parser.add_argument('--out', '-o', type=str, help="path of the directory to save output files (default: name of input file)")
-    parser.add_argument('--extension', '-x', type=str, help="file extension of output images (default: match input file)")
-    parser.add_argument('--align-horizontal', '-hz', type=str, default="centre", choices=["left", "centre", "right"], help="horizontal alignment of values (default: centre)")
-    parser.add_argument('--align-vertical', '-v', type=str, default="centre", choices=["top", "centre", "bottom"], help="vertical alignment of values (default: centre)")
-    parser.add_argument('--use-config', '-c', action="store_true", help="use if the config.json file should be used")
+    parser.add_argument('inputfile', type=str, metavar="input-file",
+                        help="path to the image to be split")
+    parser.add_argument('--out', '-o', type=str,
+                        help="path of the directory to save output files (default: name of input file)")
+    parser.add_argument('--extension', '-x', type=str,
+                        help="file extension of output images (default: match input file)")
+    parser.add_argument('--align-horizontal', '-hz', type=str, default="centre", choices=[
+                        "left", "centre", "right"], help="horizontal alignment of values (default: centre)")
+    parser.add_argument('--align-vertical', '-v', type=str, default="centre", choices=[
+                        "top", "centre", "bottom"], help="vertical alignment of values (default: centre)")
+    parser.add_argument('--use-config', '-c', action="store_true",
+                        help="use if the config.json file should be used")
     args = parser.parse_args()
-    
+
     main(args)
